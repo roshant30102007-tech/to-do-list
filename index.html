@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daily Tasks</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <main class="notebook">
+
+    <!-- ========== HEADER ========== -->
+    <header class="top">
+      <p class="date" id="today-date"></p>
+      <h1 id="greeting">Hello</h1>
+    </header>
+
+    <!-- ========== PROGRESS ========== -->
+    <section class="progress" aria-label="Progress">
+      <div class="progress-text">
+        <span id="progress-label">No tasks yet</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar">
+        <div class="bar-fill" id="bar-fill"></div>
+      </div>
+    </section>
+
+    <!-- ========== ADD TASK FORM ========== -->
+    <form id="task-form" class="add" autocomplete="off">
+      <label class="sr-only" for="task-input">New task</label>
+      <input id="task-input" type="text" placeholder="What needs doing?" maxlength="120" required>
+
+      <label class="sr-only" for="priority">Priority</label>
+      <select id="priority">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <button type="submit" class="add-btn">Add task</button>
+    </form>
+
+    <!-- ========== FILTERS ========== -->
+    <nav class="filters" aria-label="Filter tasks">
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="active">To do</button>
+      <button class="filter" data-filter="done">Done</button>
+    </nav>
+
+    <!-- ========== TASK LIST ========== -->
+    <ul id="task-list" class="list"></ul>
+    <p id="empty" class="empty" hidden></p>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bottom">
+      <span id="count">0 tasks left</span>
+      <button id="clear-done" class="link-btn">Clear completed</button>
+    </footer>
+
+  </main>
+
+</body>
+</html>

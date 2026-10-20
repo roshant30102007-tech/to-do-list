@@ -1,0 +1,133 @@
+/* ========== 1. VARIABLES & RESET ========== */
+:root {
+  --bg: #87ceeb;           /* sky blue */
+  --sheet: #ffffff;
+  --ink: #1f2a37;
+  --muted: #6b7785;
+  --rule: #d3eaf7;        /* notebook line colour */
+  --margin: #8fd0f0;      /* margin line */
+  --brand: #0f7cc0;
+  --done: #2e9e6b;
+  --low: #7bb0e8;
+  --medium: #f0b429;
+  --high: #e5484d;
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: start center;
+  padding: 2.5rem 1rem;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, var(--bg) 0%, #c4e8f8 55%, #ffffff 100%) fixed;
+}
+button, input, select { font: inherit; color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+/* ========== 2. NOTEBOOK SHEET ========== */
+.notebook {
+  width: min(100%, 560px);
+  background: var(--sheet);
+  border-radius: 16px;
+  padding: 2rem 1.5rem 1.25rem 3.25rem;
+  position: relative;
+  box-shadow: 0 18px 40px rgba(15, 90, 140, .22);
+  /* red margin line down the left side */
+  background-image: linear-gradient(to right, transparent 2.4rem, var(--margin) 2.4rem, var(--margin) calc(2.4rem + 2px), transparent calc(2.4rem + 2px));
+}
+
+/* ========== 3. HEADER ========== */
+.date { margin: 0; color: var(--muted); font-size: .95rem; }
+h1 { font-family: Georgia, "Times New Roman", serif; font-size: 2.1rem; margin: .1rem 0 1.25rem; }
+
+/* ========== 4. PROGRESS ========== */
+.progress-text { display: flex; justify-content: space-between; font-size: .9rem; color: var(--muted); margin-bottom: .4rem; }
+.bar { height: 10px; background: #e0f1fb; border-radius: 99px; overflow: hidden; }
+.bar-fill { height: 100%; width: 0; background: var(--brand); border-radius: 99px; transition: width .4s ease, background .3s; }
+.bar-fill.complete { background: var(--done); }
+
+/* ========== 5. ADD FORM ========== */
+.add { display: grid; grid-template-columns: 1fr auto auto; gap: .5rem; margin: 1.5rem 0 1rem; }
+.add input, .add select {
+  padding: .7rem .8rem; border: 1px solid #b9dcef; border-radius: var(--radius); background: #fff; min-width: 0;
+}
+.add-btn {
+  padding: .7rem 1.1rem; border: 0; border-radius: var(--radius);
+  background: var(--brand); color: #fff; font-weight: 600; cursor: pointer;
+  transition: transform .15s, background .15s;
+}
+.add-btn:hover { background: #0b659d; transform: translateY(-1px); }
+
+/* ========== 6. FILTERS ========== */
+.filters { display: flex; gap: .4rem; margin-bottom: .5rem; }
+.filter {
+  padding: .35rem .9rem; border: 1px solid #b9dcef; border-radius: 99px;
+  background: transparent; cursor: pointer; color: var(--muted);
+}
+.filter.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ========== 7. TASK LIST ========== */
+.list { list-style: none; margin: 0; padding: 0; }
+.task {
+  display: flex; align-items: center; gap: .75rem;
+  min-height: 3.2rem; padding: .4rem 0;
+  border-bottom: 1px solid var(--rule);
+  animation: slide-in .25s ease;
+}
+.task.removing { animation: slide-out .22s ease forwards; }
+
+/* custom checkbox: the real input stays for accessibility */
+.check { position: relative; width: 24px; height: 24px; flex: none; }
+.check input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.check span {
+  position: absolute; inset: 0; border: 2px solid #9fb0c0; border-radius: 50%;
+  display: grid; place-items: center; transition: background .2s, border-color .2s;
+}
+.check span::after {
+  content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) scale(0); transition: transform .2s; margin-top: -2px;
+}
+.check input:checked + span { background: var(--done); border-color: var(--done); }
+.check input:checked + span::after { transform: rotate(45deg) scale(1); }
+.check input:focus-visible + span { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+.text { flex: 1; overflow-wrap: anywhere; transition: color .2s; }
+.task.done .text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--done); }
+
+.tag { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.tag.low { background: var(--low); }
+.tag.medium { background: var(--medium); }
+.tag.high { background: var(--high); }
+
+.delete {
+  border: 0; background: none; cursor: pointer; color: var(--muted);
+  width: 32px; height: 32px; border-radius: 8px; font-size: 1.3rem; line-height: 1;
+}
+.delete:hover { background: #fde8e8; color: var(--high); }
+
+.empty { color: var(--muted); text-align: center; padding: 1.8rem 0; margin: 0; }
+
+/* ========== 8. FOOTER ========== */
+.bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; color: var(--muted); font-size: .9rem; }
+.link-btn { border: 0; background: none; cursor: pointer; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.link-btn:disabled { color: #aab6c2; cursor: default; text-decoration: none; }
+
+/* ========== 9. ANIMATIONS & RESPONSIVE ========== */
+@keyframes slide-in  { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes slide-out { to { opacity: 0; transform: translateX(30px); } }
+
+@media (max-width: 480px) {
+  .notebook { padding-left: 2.9rem; padding-right: 1rem; }
+  .add { grid-template-columns: 1fr 1fr; }
+  .add input { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task, .task.removing { animation: none; }
+  .bar-fill, .add-btn { transition: none; }
+}
